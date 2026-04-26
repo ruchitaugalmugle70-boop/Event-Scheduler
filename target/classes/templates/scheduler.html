@@ -147,6 +147,7 @@
                     <thead>
                         <tr>
                             <th>EVENT NAME</th>
+                            <th>DATE</th>
                             <th>TEMPORAL WINDOW</th>
                             <th>RESOURCE ID</th>
                             <th>SUPERVISOR</th>
@@ -160,6 +161,9 @@
                                     <div th:class="${'badge priority-' + e.priority}" th:text="'L' + ${e.priority}" style="width: 28px; height: 28px; padding: 0; display: flex; align-items: center; justify-content: center;">P3</div>
                                     <span style="font-weight: 700;" th:text="${e.name}">Event</span>
                                 </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-primary);" th:text="${e.date}">2023-10-25</div>
                             </td>
                             <td>
                                 <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-dim); font-size: 0.9rem;">
@@ -203,6 +207,10 @@
                     <div class="form-group">
                         <label>Event Identification</label>
                         <input type="text" name="name" placeholder="Mathematics Symposium" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); color: white; padding: 0.75rem; border-radius: 10px; width: 100%;">
+                    </div>
+                    <div class="form-group">
+                        <label>Scheduled Date</label>
+                        <input type="date" name="date" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); color: white; padding: 0.75rem; border-radius: 10px; width: 100%; color-scheme: dark;">
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">

@@ -37,9 +37,11 @@ public class ConflictGraph {
             List<Event> overlaps = tree.findOverlaps(e1);
             for (Event e2 : overlaps) {
                 if (!e1.equals(e2)) {
-                    // Bi-directional constraint
-                    adjacencyList.get(e1).add(e2);
-                    adjacencyList.get(e2).add(e1);
+                    // Logic check: Same date?
+                    if (e1.getDate() != null && e2.getDate() != null && e1.getDate().equals(e2.getDate())) {
+                        adjacencyList.get(e1).add(e2);
+                        adjacencyList.get(e2).add(e1);
+                    }
                 }
             }
         }
@@ -67,7 +69,12 @@ public class ConflictGraph {
                 String pairId = e1.getId() < e2.getId() ? e1.getId()+":"+e2.getId() : e2.getId()+":"+e1.getId();
                 if (!seenPair.contains(pairId)) {
                     if (e1.conflictsWith(e2)) {
-                        String reason = e1.getResource().equalsIgnoreCase(e2.getResource()) ? "Room Clash" : "Speaker Overlap";
+                        String reason = "Temporal Conflict";
+                        if (e1.getResource().equalsIgnoreCase(e2.getResource())) {
+                            reason = "Room Clash";
+                        } else if (e1.getSpeaker().equalsIgnoreCase(e2.getSpeaker())) {
+                            reason = "Speaker Collision";
+                        }
                         conflicts.add(new ConflictDetail(e1, e2, reason));
                     }
                     seenPair.add(pairId);

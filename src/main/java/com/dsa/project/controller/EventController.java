@@ -52,14 +52,16 @@ public class EventController {
 
     @PostMapping("/add-event")
     public String addEvent(@RequestParam String name, 
+                           @RequestParam String date,
                            @RequestParam String start, 
                            @RequestParam String end, 
                            @RequestParam String resource,
                            @RequestParam String speaker,
                            @RequestParam(defaultValue = "3") Integer priority) {
         try {
-            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("H:mm");
-            Event event = new Event(name, LocalTime.parse(start, formatter), LocalTime.parse(end, formatter), resource, speaker, priority);
+            java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("H:mm");
+            java.time.LocalDate localDate = java.time.LocalDate.parse(date);
+            Event event = new Event(name, localDate, LocalTime.parse(start, timeFormatter), LocalTime.parse(end, timeFormatter), resource, speaker, priority);
             event.setId(idCounter++);
             eventList.add(event);
             roomPool.add(resource); 

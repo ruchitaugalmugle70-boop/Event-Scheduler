@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Event {
@@ -12,6 +14,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
     private String resource; // Original requested room
@@ -22,8 +25,9 @@ public class Event {
 
     public Event() {}
 
-    public Event(String name, LocalTime startTime, LocalTime endTime, String resource, String speaker, Integer priority) {
+    public Event(String name, LocalDate date, LocalTime startTime, LocalTime endTime, String resource, String speaker, Integer priority) {
         this.name = name;
+        this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.resource = resource;
@@ -39,6 +43,9 @@ public class Event {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
 
     public LocalTime getStartTime() { return startTime; }
     public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
@@ -76,6 +83,9 @@ public class Event {
     }
 
     public String getDisplayDay() {
+        if (date != null && (colorIndex == null || colorIndex <= 0)) {
+            return date.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));
+        }
         if (colorIndex == null || colorIndex <= 0) return "Day 1";
         return "Day " + (colorIndex + 1);
     }
@@ -102,6 +112,9 @@ public class Event {
      */
     public boolean conflictsWith(Event other) {
         if (this.id.equals(other.id)) return false;
+        
+        // DSA Logic: No conflict if on different dates
+        if (this.date != null && other.date != null && !this.date.equals(other.date)) return false;
         
         int s1 = this.startTime.getHour() * 60 + this.startTime.getMinute();
         int e1 = this.endTime.getHour() * 60 + this.endTime.getMinute();
