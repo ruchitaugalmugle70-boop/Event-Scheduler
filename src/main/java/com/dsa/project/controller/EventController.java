@@ -25,6 +25,11 @@ public class EventController {
     private long idCounter = 1;
     private Set<String> roomPool = new java.util.HashSet<>(java.util.Arrays.asList("Room 101", "Room 102", "Room 103"));
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/")
     public String index(Model model) {
         com.dsa.project.model.ConflictGraph graph = new com.dsa.project.model.ConflictGraph(eventList);
