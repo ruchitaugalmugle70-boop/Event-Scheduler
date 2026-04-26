@@ -7,5 +7,6 @@
 /Users/admin/Documents/DSAProject/src/main/java/com/dsa/project/model/BacktrackStep.java
 /Users/admin/Documents/DSAProject/src/main/java/com/dsa/project/controller/EventController.java
 /Users/admin/Documents/DSAProject/src/main/java/com/dsa/project/service/SchedulingService.java
+/Users/admin/Documents/DSAProject/src/main/java/com/dsa/project/config/SecurityConfig.java
 /Users/admin/Documents/DSAProject/src/main/java/com/dsa/project/model/IntervalNode.java
 /Users/admin/Documents/DSAProject/src/main/java/com/dsa/project/model/Event.java
