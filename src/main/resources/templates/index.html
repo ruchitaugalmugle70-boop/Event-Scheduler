@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="bento-card col-4">
+            <div class="bento-card col-4" sec:authorize="hasRole('ADMIN')">
                 <div style="display: flex; justify-content: space-between; align-items: start;">
                     <div>
                         <h4 style="color: var(--danger); margin-bottom: 0.5rem;">COLLISION FAULTS</h4>
@@ -36,19 +36,19 @@
                 <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 1rem;">Requires Heuristic Resolution</div>
             </div>
 
-            <div class="bento-card col-4" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), transparent); border-color: rgba(139, 92, 246, 0.3);">
+            <div class="bento-card col-4" sec:authorize="hasRole('ADMIN')" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), transparent); border-color: rgba(139, 92, 246, 0.3);">
                 <h4 style="color: var(--accent-primary);">SOLVER STATE</h4>
                 <div class="stat-value" style="font-size: 1.25rem; font-family: 'Orbitron', sans-serif; margin: 1.5rem 0; letter-spacing: 0.1em; color: white;">READY_TO_OPTIMIZE</div>
                 <a th:href="@{/scheduler}" class="btn-new" style="display: inline-block; width: 100%; text-align: center; padding: 0.8rem;">Access Solver</a>
             </div>
 
             <!-- Main Activity -->
-            <div class="bento-card col-8">
+            <div class="bento-card" th:classappend="${#authorization.expression('hasRole(''ADMIN'')') ? 'col-8' : 'col-12'}">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h2>Synchronized Buffer</h2>
+                    <h2 th:text="${#authorization.expression('hasRole(''ADMIN'')') ? 'Synchronized Buffer' : 'Live Event Schedule'}">Synchronized Buffer</h2>
                     <div style="display: flex; gap: 0.5rem;">
                         <span class="badge badge-success">Live</span>
-                        <span class="badge" style="background: rgba(255,255,255,0.05);">Updated 2m ago</span>
+                        <span class="badge" style="background: rgba(255,255,255,0.05);">Updated Just Now</span>
                     </div>
                 </div>
                 
@@ -88,7 +88,7 @@
             </div>
 
             <!-- Side Widgets -->
-            <div class="bento-card col-4">
+            <div class="bento-card col-4" sec:authorize="hasRole('ADMIN')">
                 <h2>Health Metrics</h2>
                 <div style="margin-top: 2rem;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">
