@@ -56,9 +56,10 @@
                     <thead>
                         <tr>
                             <th>EVENT</th>
+                            <th>DATE</th>
+                            <th>TIME</th>
                             <th>RESOURCES</th>
                             <th>SPEAKER</th>
-                            <th>PRIORITY</th>
                             <th>STATUS</th>
                         </tr>
                     </thead>
@@ -66,8 +67,15 @@
                         <tr th:each="e : ${events}">
                             <td>
                                 <div style="font-weight: 700; font-family: 'Orbitron', sans-serif;" th:text="${e.name}">Event</div>
-                                <div style="font-size: 0.75rem; color: var(--text-dim);">
-                                    <span th:text="${e.colorIndex != -1 ? 'SLOT ' + e.colorIndex : (e.startTime + ' - ' + e.endTime)}">Time</span>
+                                <div th:class="${'badge priority-' + e.priority}" th:text="'Level ' + ${e.priority}" style="font-size: 0.6rem; transform: scale(0.8); margin-left: -5px;">P3</div>
+                            </td>
+                            <td>
+                                <div style="font-weight: 600; color: var(--accent-primary);" th:text="${e.date}">Date</div>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.85rem; color: var(--text-dim);">
+                                    <span th:text="${e.startTime + ' - ' + e.endTime}">Time</span>
+                                    <div th:if="${e.colorIndex != -1}" style="font-size: 0.65rem; color: var(--accent-secondary); margin-top: 2px;" th:text="${'SLOT ' + e.colorIndex}">SLOT</div>
                                 </div>
                             </td>
                             <td>
@@ -76,9 +84,6 @@
                                       th:text="${e.colorIndex != -1 ? e.assignedRoom : e.resource}">Room</span>
                             </td>
                             <td th:text="${e.speaker}">Speaker</td>
-                            <td>
-                                <div th:class="${'badge priority-' + e.priority}" th:text="'Level ' + ${e.priority}">P3</div>
-                            </td>
                             <td>
                                 <span th:if="${e.colorIndex == -1}" class="badge" style="background: rgba(244, 63, 94, 0.1); color: var(--danger);">UNSCHEDULED</span>
                                 <span th:if="${e.colorIndex != -1}" class="badge badge-success" style="box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); font-family: 'Orbitron', sans-serif; letter-spacing: 0.05em;">DEPLOYED</span>
