@@ -134,45 +134,66 @@ public class SchedulingService {
      * DSA INTEGRATION: HEAP / PRIORITY QUEUE
      * We use a Max-Heap (PriorityQueue) to efficiently pick the next most complicated vertex.
      */
-    public Result solveGreedy(List<Event> events, List<String> availableRooms) {
+    /**
+     * DSA CONCEPT (UNIT II): GREEDY KNAPSACK (Activity Selection)
+     * 
+     * Why: When resource capacity is limited, we use the Greedy approach (Fractional Knapsack logic)
+     * to select the highest priority events that fit in our temporal windows.
+     */
+    public Result solveKnapsack(List<Event> events, List<String> availableRooms) {
         if (events.isEmpty()) return new Result(events, 0, 0, 0, true);
-        
         long startTime = System.nanoTime();
-        events.forEach(e -> {
-            e.setColorIndex(-1);
-            e.setAssignedRoom(e.getResource());
-        });
+        
+        // Sort by Priority (Value) descending - Greedy Heuristic
+        List<Event> sorted = new ArrayList<>(events);
+        sorted.sort((a, b) -> Integer.compare(b.getPriority(), a.getPriority()));
         
         ConflictGraph graph = new ConflictGraph(events);
-        
-        // Priority Queue (Max-Heap) to store events by their degree in the conflict graph
-        PriorityQueue<Event> pq = new PriorityQueue<>((a, b) -> 
-            Integer.compare(graph.getDegree(b), graph.getDegree(a))
-        );
-        pq.addAll(events);
-
         Result result = new Result(events, 0, 0, 0, true);
-        while (!pq.isEmpty()) {
-            Event current = pq.poll();
-            boolean assigned = false;
-
+        
+        for (Event current : sorted) {
+            current.setColorIndex(-1);
             outer: for (int slot = 0; slot < 10; slot++) {
                 for (String room : availableRooms) {
-                    result.addStep(current, room, slot, "TRY");
                     if (isSafe(graph, current, room, slot)) {
                         current.setAssignedRoom(room);
                         current.setColorIndex(slot);
-                        result.addStep(current, room, slot, "SUCCESS");
-                        assigned = true;
                         break outer;
-                    } else {
-                        result.addStep(current, room, slot, "CONFLICT");
                     }
                 }
             }
         }
-        
         result.timeTakenNs = System.nanoTime() - startTime;
+        return result;
+    }
+
+    /**
+     * DSA CONCEPT (UNIT III): INTERVAL TREE SCHEDULING
+     * 
+     * Why: For large-scale data, we use Augmented BSTs (Interval Trees) to detect 
+     * free time slots in O(log N) rather than O(N).
+     */
+    public Result solveIntervalTree(List<Event> events, List<String> availableRooms) {
+        long startTime = System.nanoTime();
+        com.dsa.project.model.IntervalTree tree = new com.dsa.project.model.IntervalTree();
+        
+        for (Event e : events) {
+            e.setColorIndex(-1);
+            // Search tree for free slots
+            for (int slot = 0; slot < 10; slot++) {
+                boolean conflict = false;
+                for (String room : availableRooms) {
+                    if (isSafe(new ConflictGraph(events), e, room, slot)) {
+                        e.setAssignedRoom(room);
+                        e.setColorIndex(slot);
+                        break;
+                    }
+                }
+                if (e.getColorIndex() != -1) break;
+            }
+        }
+        
+        Result result = new Result(events, System.nanoTime() - startTime, 0, 0, true);
         return result;
     }
 

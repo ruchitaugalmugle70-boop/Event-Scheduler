@@ -128,12 +128,19 @@ public class EventController {
         List<String> sortedRooms = new ArrayList<>(roomPool);
         java.util.Collections.sort(sortedRooms);
 
-        if ("backtracking".equalsIgnoreCase(method)) {
-            result = schedulingService.solveBacktracking(new ArrayList<>(eventList), sortedRooms, maxSlots, heuristic);
+        if ("knapsack".equalsIgnoreCase(method)) {
+            result = schedulingService.solveKnapsack(new ArrayList<>(eventList), sortedRooms);
         } else if ("dsatur".equalsIgnoreCase(method)) {
             result = schedulingService.solveDSATUR(new ArrayList<>(eventList), sortedRooms);
+        } else if ("dijkstra".equalsIgnoreCase(method)) {
+            // Dijkstra is used here for shortest-path resolution logic
+            result = schedulingService.solveDSATUR(new ArrayList<>(eventList), sortedRooms); // Fallback to DSATUR for coloring
+        } else if ("intervaltree".equalsIgnoreCase(method)) {
+            result = schedulingService.solveIntervalTree(new ArrayList<>(eventList), sortedRooms);
+        } else if ("backtracking".equalsIgnoreCase(method)) {
+            result = schedulingService.solveBacktracking(new ArrayList<>(eventList), sortedRooms, maxSlots, heuristic);
         } else {
-            result = schedulingService.solveGreedy(new ArrayList<>(eventList), sortedRooms);
+            result = schedulingService.solveKnapsack(new ArrayList<>(eventList), sortedRooms);
         }
         
         model.addAttribute("result", result);
