@@ -21,9 +21,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Disabled for local development/testing ease
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/login").permitAll()
                 .requestMatchers("/add-event", "/update-event", "/delete-event", "/clear", "/solve", "/get-suggestions").hasRole("ADMIN")
                 .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.ALWAYS)
+                .invalidSessionUrl("/login")
             )
             .formLogin(login -> login
                 .loginPage("/login")

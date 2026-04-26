@@ -6,17 +6,17 @@
 <body>
     <main class="animate-in">
         <!-- Dashboard Header Actions -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
             <div>
-                <h2 style="margin-bottom: 0;">Solver Workspace</h2>
-                <p style="color: var(--text-dim); font-size: 0.9rem;">Configure parameters and execute constraint resolution.</p>
+                <h2 style="margin-bottom: 0.5rem; font-family: 'Orbitron', sans-serif;">SOLVER COMMAND</h2>
+                <p style="color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">Constraint Satisfaction Engine &bullet; Graph Mode</p>
             </div>
-            <button sec:authorize="hasRole('ADMIN')" onclick="openAddModal()" class="btn-new" style="display: flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer; font-family: inherit;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                Deploy New Event
+            <button sec:authorize="hasRole('ADMIN')" onclick="openAddModal()" class="btn-new" style="display: flex; align-items: center; gap: 0.75rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Deploy Packet
             </button>
-            <div sec:authorize="!hasRole('ADMIN')" class="badge" style="background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-dim);">
-                VIEW ONLY DOCK
+            <div sec:authorize="!hasRole('ADMIN')" class="badge" style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--accent-secondary); font-family: 'Orbitron', sans-serif; letter-spacing: 0.1em;">
+                OBSERVER_MODE_ACTIVE
             </div>
         </div>
 
@@ -64,11 +64,11 @@
 
             <!-- Conflict Center (Advanced Interactive) -->
             <div class="bento-card col-4">
-                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
-                    <div style="width: 32px; height: 32px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--danger);">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <div style="width: 38px; height: 38px; background: rgba(244, 63, 94, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--danger); box-shadow: 0 0 15px rgba(244, 63, 94, 0.2);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                     </div>
-                    <h3 style="font-size: 1.1rem; margin: 0;">Conflict Center</h3>
+                    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1rem; margin: 0; letter-spacing: 0.1em;">CONFLICT CENTER</h3>
                 </div>
                 
                 <div th:if="${totalConflicts == 0}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 150px; opacity: 0.5;">
@@ -215,12 +215,12 @@
 
         <!-- Add Event Modal -->
         <div id="addModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(12px);">
-            <div class="bento-card" style="width: 100%; max-width: 700px; padding: 3rem; animation: slideUp 0.3s ease; background: var(--sidebar-bg); border-color: var(--accent-primary);">
-                <h2 style="margin-bottom: 2.5rem; font-size: 2rem;">Deploy New Event</h2>
+            <div class="bento-card animate-in" style="width: 100%; max-width: 750px; padding: 3.5rem; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--accent-primary); box-shadow: 0 0 50px rgba(139, 92, 246, 0.2);">
+                <h2 style="margin-bottom: 3rem; font-family: 'Orbitron', sans-serif; font-size: 2.25rem; text-align: center;">PHASE_DEPLOYMENT</h2>
                 <form th:action="@{/add-event}" method="post">
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="font-size: 1.1rem; margin-bottom: 0.75rem;">Event Identification</label>
-                        <input type="text" name="name" placeholder="Mathematics Symposium" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); color: white; padding: 1rem; border-radius: 12px; width: 100%; font-size: 1rem;">
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label>Packet Identifier</label>
+                        <input type="text" name="name" placeholder="EVENT_SYMPOSIUM_01" required>
                     </div>
                     <div class="form-group" style="margin-bottom: 1.5rem;">
                         <label style="font-size: 1.1rem; margin-bottom: 0.75rem;">Scheduled Date</label>
