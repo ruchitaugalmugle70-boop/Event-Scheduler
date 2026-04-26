@@ -32,8 +32,14 @@ public class EventController {
 
     @GetMapping("/")
     public String index(Model model) {
+        List<Event> sortedEvents = new ArrayList<>(eventList);
+        sortedEvents.sort((e1, e2) -> {
+            int dateComp = e1.getDate().compareTo(e2.getDate());
+            if (dateComp != 0) return dateComp;
+            return e1.getStartTime().compareTo(e2.getStartTime());
+        });
         com.dsa.project.model.ConflictGraph graph = new com.dsa.project.model.ConflictGraph(eventList);
-        model.addAttribute("events", eventList);
+        model.addAttribute("events", sortedEvents);
         model.addAttribute("totalConflicts", graph.getTotalConflicts());
         model.addAttribute("headerTitle", "Executive Dashboard");
         model.addAttribute("currentUri", "/");
@@ -45,8 +51,15 @@ public class EventController {
         // Ensure all resources typed by user are in the pool
         eventList.forEach(e -> roomPool.add(e.getResource()));
         
+        List<Event> sortedEvents = new ArrayList<>(eventList);
+        sortedEvents.sort((e1, e2) -> {
+            int dateComp = e1.getDate().compareTo(e2.getDate());
+            if (dateComp != 0) return dateComp;
+            return e1.getStartTime().compareTo(e2.getStartTime());
+        });
+
         com.dsa.project.model.ConflictGraph graph = new com.dsa.project.model.ConflictGraph(eventList);
-        model.addAttribute("events", eventList);
+        model.addAttribute("events", sortedEvents);
         model.addAttribute("roomPool", roomPool);
         model.addAttribute("totalConflicts", graph.getTotalConflicts());
         model.addAttribute("detailedConflicts", graph.getDetailedConflicts());
